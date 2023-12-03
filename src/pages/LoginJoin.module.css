@@ -1,0 +1,44 @@
+.loginJoinPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px; /* Header의 높이를 고려하여 padding-top 추가 */
+  height: calc(100vh - 140px); /* Header와 Footer의 높이를 고려하여 조정 */
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  width: 100%;
+  background-color: white;
+}
+
+input {
+  margin: 6px 0;
+  padding: 10px;
+  width: 200px;
+}
+
+.button {
+  margin: 10px 0;
+  width: 224px;
+  padding: 8px 0;
+  cursor: pointer;
+  background-color: blue;
+  color: white;
+  font-size: 24px;
+}
+
+.link {
+  margin-top: 20px;
+  color: blue;
+  cursor: pointer;
+}
+
+.errorMessage {
+  height: 20px;
+  color: red;
+  font-size: 14px;
+}

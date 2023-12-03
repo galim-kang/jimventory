@@ -1,0 +1,108 @@
+.container {
+  margin: 0 auto;
+  max-width: 320px;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.illustration {
+  width: 320px;
+  height: 320px;
+  background-color: blue;
+  margin-bottom: 15px;
+}
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.description,
+.time {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.bookingButton {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.moveButton {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 14px 0;
+}
+input[type="date"],
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 6px;
+  box-sizing: border-box;
+}
+
+.bagsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.bagsControl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+}
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .container {
+    max-width: 500px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .description,
+  .time {
+    font-size: 18px;
+  }
+
+  .bookingButton {
+    padding: 15px;
+    font-size: 18px;
+  }
+
+  input[type="date"],
+  input[type="number"],
+  input[type="email"] {
+    padding: 15px;
+    font-size: 18px;
+  }
+}
