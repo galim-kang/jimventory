@@ -68,7 +68,7 @@ const Jimventory = ({ selectedItem, setSelectedItem }) => {
       ) {
         setSelectedItem(null);
       }
-    };
+    }; // 짐벤토리 외부영역 클릭했을 시 이벤트 감지, selectedItem 없는걸로 간주하고 null로 비워버리기
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -76,7 +76,7 @@ const Jimventory = ({ selectedItem, setSelectedItem }) => {
     };
   }, [setSelectedItem]);
 
-  if (!selectedItem) return null;
+  if (!selectedItem) return null; // selectedItem 없으면 짐벤토리 컴포넌트 띄우지 않기
 
   const { operatingTime, serviceName, storeType } = selectedItem;
 
