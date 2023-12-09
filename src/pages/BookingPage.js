@@ -20,7 +20,9 @@ function BookingPage() {
   const [section, setSection] = useState(0);
   const [isNextDisabled, setIsNextDisabled] = useState(false); // "Next" 버튼 활성화 여부 상태 변수 추가
 
-  const selectedItem = serviceData.find((item) => item.id === id);
+  const selectedItem = serviceData.find((item) => item.id === id); 
+  // 메인페이지에서 클릭해서 넘어온 가게의 id와 서버에 있는 데이터 비교하여
+  // selectedItem에 담아준다
   useEffect(() => {
     console.log(selectedItem);
   }, [selectedItem]);
@@ -72,7 +74,7 @@ function BookingPage() {
     return bagCost * bookingInfo.bags * (days + 1);
   };
 
-  const { operatingTime, serviceName, storeType, address } = selectedItem;
+  const { operatingTime, serviceName, storeType, address } = selectedItem; // 가게 정보에서 받아온 프로퍼티 데이터들
 
   const nextSection = () => {
     if (section < 4) {
@@ -223,3 +225,25 @@ function BookingPage() {
 }
 
 export default BookingPage;
+
+// section 2
+// 날짜 input 받을 때 
+// 1시간 단위로 받을건데
+// check-in 12월 4일 11시부터 맡기고 싶어 => 12/04 11:00
+// check-out 미리 지정하지 않고, 쓴 시간만큼만 자동결제 (카드 등록해놓기)
+// 자동결제 되는 결제수단 알아내서 그거 사용하기 
+// 사용시간만큼 자동결제 되는거 알려주기
+
+// section 3
+// 박스 크기를 알려주고, 종류가 2개 있다고 가정해서 
+// 박스 몇 개 할건지 입력받기
+
+// section 4 
+// 결제 수단 입력받기
+// 자동결제 혹은 현금결제
+
+// section 5 
+// 자동결제 => 자동결제 수단 입력받기
+// 현금결제 => 예약 완료! 
+
+// 예약 성공하면 서버에 예약정보 저장(업데이트)

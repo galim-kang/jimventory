@@ -46,6 +46,7 @@ const JoinPage = () => {
       setPasswordConfirmError("Passwords do not match.");
       return;
     }
+    // 유효성 검사 통과하면 로그인 페이지로 이동, 서버에 정보 저장
 
     // Proceed with the signup process
   };
@@ -99,3 +100,7 @@ const JoinPage = () => {
 };
 
 export default JoinPage;
+
+// 유효성 검사 통과하면 로그인 페이지로 이동, 서버에 정보 저장
+// 소셜로그인 => 구글 , 페이스북, 애플 , 라인 , 카카오 
+// 토큰 로그인 로직 구현하기
