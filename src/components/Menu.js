@@ -1,96 +1,47 @@
 import React, { useContext } from "react";
-import styled, { keyframes } from "styled-components";
-
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { AuthContext } from "../context";
 
-const slideIn = keyframes`
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
-
-const BackGround = styled.div`
+const MenuBar = styled.div`
   position: fixed;
-  top: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
+  background-color: #f8f9fa;
+  padding: 10px 0;
   display: flex;
-  justify-content: flex-end;
-  background-color: rgba(250, 250, 250, 0.8);
-`;
-
-const Modal = styled.div`
-  width: 85%;
-  background-color: blue;
-  right: 0;
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  animation: ${slideIn} 0.5s ease;
-  color: white;
-  border-radius: 30px 0 0 30px;
-  padding: 20px;
-
-  @media screen and (max-width: 768px) {
-    width: 80%;
-  }
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const MenuItem = styled(Link)`
-  text-decoration: none;
-  font-size: 28px;
-  width: 210px;
-  color: white;
-  text-align: end;
-  margin-bottom: 10px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
+const MenuItem = styled.div`
+  cursor: pointer;
 `;
 
 const Menu = ({ setMenuOpen }) => {
   const { isLoggedIn, logout } = useContext(AuthContext);
 
-  const onMenuItemClick = () => {
+  const onMenuItemClick = (path) => {
     setMenuOpen(false);
+    // 페이지 이동 로직 작성
   };
 
   return (
-    <BackGround>
-      <Modal>
-        <h1>
-          <span>Open Your</span>
-          <br />
-          <span>JIMVENTORY!</span>
-        </h1>
-        <MenuItem to="/my-jimventory" onClick={onMenuItemClick}>
-          My Jimventory
-        </MenuItem>
-        {isLoggedIn ? (
-          <MenuItem
-            onClick={() => {
-              logout();
-              onMenuItemClick();
-            }}
-          >
-            Log Out
-          </MenuItem>
-        ) : (
-          <MenuItem to="/login" onClick={onMenuItemClick}>
-            Login
-          </MenuItem>
-        )}
-      </Modal>
-    </BackGround>
+    <MenuBar>
+      <MenuItem onClick={() => onMenuItemClick("/content1")}>
+        <Link to="/content1">Content1</Link>
+      </MenuItem>
+      <MenuItem onClick={() => onMenuItemClick("/content2")}>
+        <Link to="/content2">Content2</Link>
+      </MenuItem>
+      <MenuItem onClick={() => onMenuItemClick("/content3")}>
+        <Link to="/content3">Content3</Link>
+      </MenuItem>
+      <MenuItem onClick={() => onMenuItemClick("/content4")}>
+        <Link to="/content4">Content4</Link>
+      </MenuItem>
+    </MenuBar>
   );
 };
 

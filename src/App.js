@@ -8,13 +8,14 @@ import JoinPage from "./pages/JoinPage";
 import MainPage from "./pages/MainPage";
 import BookingPage from "./pages/BookingPage";
 import MyJimventory from "./pages/MyJimventory";
+import StartPage from "./pages/StartPage";
 
 import Layout from "./Layout";
 
 import { AuthContext } from "./context";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const login = () => setIsLoggedIn(true);
   const logout = () => setIsLoggedIn(false);
@@ -23,16 +24,17 @@ function App() {
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       <Router>
         <Routes>
+          <Route path="/" element={<StartPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/join" element={<JoinPage />} />
           <Route
-            path="/"
+            path="/landing"
             element={
               <Layout>
                 <LandingPage />
               </Layout>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/join" element={<JoinPage />} />
           <Route
             path="/main"
             element={
@@ -41,19 +43,20 @@ function App() {
               </Layout>
             }
           />
-          <Route
-            path="/booking/:id"
-            element={
-              <Layout>
-                <BookingPage />
-              </Layout>
-            }
-          />
+
           <Route
             path="/my-jimventory"
             element={
               <Layout>
                 <MyJimventory />
+              </Layout>
+            }
+          />
+          <Route
+            path="/booking/:id"
+            element={
+              <Layout>
+                <BookingPage />
               </Layout>
             }
           />

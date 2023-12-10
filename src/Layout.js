@@ -1,12 +1,10 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Menu from "./components/Menu";
 
 const Layout = ({ children }) => {
   return (
     <div>
-      <Header />
       {children}
-      <Footer />
+      <Menu />
     </div>
   );
 };
