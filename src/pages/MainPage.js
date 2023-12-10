@@ -1,4 +1,9 @@
-import { Container as MapDiv, NaverMap, Marker, geocode } from "react-naver-maps";
+import {
+  Container as MapDiv,
+  NaverMap,
+  Marker,
+  geocode,
+} from "react-naver-maps";
 import { useState } from "react";
 import { styled } from "styled-components";
 // import { Polyline } from "react-naver-maps";
@@ -33,22 +38,22 @@ const CurrentLocationButton = styled.button`
   }
 `;
 const SearchBarWrapper = styled.div`
-position: absolute;
-top : 80px;
-`
+  position: absolute;
+  top: 80px;
+`;
 const SearchBar = styled.input`
   // height : 100px;
   // border : 1px solid black;
   // width : 300px;
-`
+`;
 function Main() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const handleCenterToCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => { 
+        (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ lat: latitude, lng: longitude });
         },
@@ -60,9 +65,9 @@ function Main() {
       console.error("Geolocation is not supported by this browser.");
     }
   };
-  // const cache = {}; // 계속 초기화 되는데 어떻게 저장해놓는다는 소리...? 차라리 데이터베이스 쓰는게 낫겠다. 
+  // const cache = {}; // 계속 초기화 되는데 어떻게 저장해놓는다는 소리...? 차라리 데이터베이스 쓰는게 낫겠다.
   const onSearchLocation = async () => {
-      // 캐시에서 값을 찾아서 있으면 캐시된 값을 반환
+    // 캐시에서 값을 찾아서 있으면 캐시된 값을 반환
     // if (cache[searchValue]) {
     //   getSearchPosition(cache[searchValue]);
     //   return;
@@ -73,55 +78,57 @@ function Main() {
         {
           headers: {
             "X-Naver-Client-Id": "QW3w2VwojlAzqDun8Ugk", // 검색 api 클라이언트 아이디 , env로 변경할 것
-            "X-Naver-Client-Secret": "arriPcMvzT"
-          }
+            "X-Naver-Client-Secret": "arriPcMvzT",
+          },
         }
       );
-      console.log(response)
-      const result = response.data.items[0].roadAddress
-      getSearchPosition(result)
+      console.log(response);
+      const { mapx, mapy } = response.data.items[0];
+      const location = { lat: mapy * 0.0000001, lng: mapx * 0.0000001 };
+      console.log(location, "dd");
+      setCurrentLocation(location);
       // cache[searchValue] = result;
-   
     } catch (error) {
       console.error(error);
     }
-  }
-const getSearchPosition = async (address) => {
-  try {
-    const response = await axios.get(
-      `https://cors-anywhere.herokuapp.com/https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(address)}`,
-      {
-        headers: {
-          "X-NCP-APIGW-API-KEY-ID": "aob8hc6abc",
-          "X-NCP-APIGW-API-KEY": "zllmjQhfwpDBGlgTCVzq2BWKtCJttIKItPQ6nbSe"
+  };
+  const getSearchPosition = async (address) => {
+    try {
+      const response = await axios.get(
+        `https://cors-anywhere.herokuapp.com/https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(
+          address
+        )}`,
+        {
+          headers: {
+            "X-NCP-APIGW-API-KEY-ID": "aob8hc6abc",
+            "X-NCP-APIGW-API-KEY": "zllmjQhfwpDBGlgTCVzq2BWKtCJttIKItPQ6nbSe",
+          },
         }
-      }
-    );
-    console.log(response)
-    const {x, y} = response.data.addresses[0];
-    const location = { lat: y, lng: x };
-    setCurrentLocation(location);
-  } catch (error) {
-    console.error(error);
-  }
-};
+      );
+      console.log(response);
+      const { x, y } = response.data.addresses[0];
+      const location = { lat: y, lng: x };
+      setCurrentLocation(location);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // function calculateDistance(longitude, latitude) {
   //   // const [x1, y1] = start;
   //   // const [x2, y2] = end;
- 
+
   //     const distance = Math.sqrt(Math.pow(longitude - currentLocation?.lng, 2) + Math.pow(latitude - currentLocation?.lat, 2));
   //     console.log(distance, 'distance')
   //     return distance;
-    
-   
+
   // }
-  
+
   // const start = [currentLocation?.lng, currentLocation?.lat];
   // const end = [selectedItem?.longitude, selectedItem?.latitude];
-  
+
   // const distance = calculateDistance(start, end);
   // console.log('두 점 사이의 거리:', distance);
- 
+
   return (
     <MapDiv
       style={{
@@ -130,8 +137,11 @@ const getSearchPosition = async (address) => {
       }}
     >
       <SearchBarWrapper>
-      <SearchBar value={searchValue} onChange={(e)=> setSearchValue(e.target.value)}/>
-      <button onClick={onSearchLocation}>search</button>
+        <SearchBar
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <button onClick={onSearchLocation}>search</button>
       </SearchBarWrapper>
       <Jimventory
         selectedItem={selectedItem}
@@ -161,7 +171,8 @@ const getSearchPosition = async (address) => {
                 lat: storage.latitude,
                 lng: storage.longitude,
               }}
-              onClick={() => {setSelectedItem(storage);
+              onClick={() => {
+                setSelectedItem(storage);
                 // calculateDistance(storage.longitude, storage.latitude);
               }}
               icon={{
@@ -180,5 +191,5 @@ const getSearchPosition = async (address) => {
 
 export default Main;
 // 길 찾기 => 도보만 몇분, 거리 몇km , 경로 표시
-// 경로가 지도에 뜨게 
-// 도보 몇분 거리 몇 km 이거는 Jimventory(가게 정보 컴포넌트)에 뜨게  
+// 경로가 지도에 뜨게
+// 도보 몇분 거리 몇 km 이거는 Jimventory(가게 정보 컴포넌트)에 뜨게

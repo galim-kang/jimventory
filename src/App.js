@@ -43,7 +43,6 @@ function App() {
               </Layout>
             }
           />
-
           <Route
             path="/my-jimventory"
             element={
