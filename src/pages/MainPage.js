@@ -1,7 +1,7 @@
-import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
+import { Container as MapDiv, NaverMap, Marker, geocode } from "react-naver-maps";
 import { useState } from "react";
 import { styled } from "styled-components";
-
+// import { Polyline } from "react-naver-maps";
 import Jimventory from "../components/Jimventory";
 
 import serviceData from "../Data/ServiceData";
@@ -9,6 +9,7 @@ import serviceData from "../Data/ServiceData";
 import MyLocationIcon from "../image/MyLocation.png";
 import MarkerIcon from "../image/MarkerIcon.png";
 import UserIcon from "../image/UserIcon.png";
+import axios from "axios";
 
 const CurrentLocationButton = styled.button`
   position: absolute;
@@ -31,14 +32,23 @@ const CurrentLocationButton = styled.button`
     width: 0;
   }
 `;
+const SearchBarWrapper = styled.div`
+position: absolute;
+top : 80px;
+`
+const SearchBar = styled.input`
+  // height : 100px;
+  // border : 1px solid black;
+  // width : 300px;
+`
 function Main() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [searchValue, setSearchValue] = useState('');
   const handleCenterToCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        (position) => { 
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ lat: latitude, lng: longitude });
         },
@@ -50,7 +60,68 @@ function Main() {
       console.error("Geolocation is not supported by this browser.");
     }
   };
-
+  // const cache = {}; // 계속 초기화 되는데 어떻게 저장해놓는다는 소리...? 차라리 데이터베이스 쓰는게 낫겠다. 
+  const onSearchLocation = async () => {
+      // 캐시에서 값을 찾아서 있으면 캐시된 값을 반환
+    // if (cache[searchValue]) {
+    //   getSearchPosition(cache[searchValue]);
+    //   return;
+    // }
+    try {
+      const response = await axios.get(
+        `https://cors-anywhere.herokuapp.com/https://openapi.naver.com/v1/search/local.json?query=${searchValue}&display=10&start=1&sort=random`,
+        {
+          headers: {
+            "X-Naver-Client-Id": "QW3w2VwojlAzqDun8Ugk", // 검색 api 클라이언트 아이디 , env로 변경할 것
+            "X-Naver-Client-Secret": "arriPcMvzT"
+          }
+        }
+      );
+      console.log(response)
+      const result = response.data.items[0].roadAddress
+      getSearchPosition(result)
+      // cache[searchValue] = result;
+   
+    } catch (error) {
+      console.error(error);
+    }
+  }
+const getSearchPosition = async (address) => {
+  try {
+    const response = await axios.get(
+      `https://cors-anywhere.herokuapp.com/https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodeURIComponent(address)}`,
+      {
+        headers: {
+          "X-NCP-APIGW-API-KEY-ID": "aob8hc6abc",
+          "X-NCP-APIGW-API-KEY": "zllmjQhfwpDBGlgTCVzq2BWKtCJttIKItPQ6nbSe"
+        }
+      }
+    );
+    console.log(response)
+    const {x, y} = response.data.addresses[0];
+    const location = { lat: y, lng: x };
+    setCurrentLocation(location);
+  } catch (error) {
+    console.error(error);
+  }
+};
+  // function calculateDistance(longitude, latitude) {
+  //   // const [x1, y1] = start;
+  //   // const [x2, y2] = end;
+ 
+  //     const distance = Math.sqrt(Math.pow(longitude - currentLocation?.lng, 2) + Math.pow(latitude - currentLocation?.lat, 2));
+  //     console.log(distance, 'distance')
+  //     return distance;
+    
+   
+  // }
+  
+  // const start = [currentLocation?.lng, currentLocation?.lat];
+  // const end = [selectedItem?.longitude, selectedItem?.latitude];
+  
+  // const distance = calculateDistance(start, end);
+  // console.log('두 점 사이의 거리:', distance);
+ 
   return (
     <MapDiv
       style={{
@@ -58,12 +129,22 @@ function Main() {
         height: "100vh",
       }}
     >
+      <SearchBarWrapper>
+      <SearchBar value={searchValue} onChange={(e)=> setSearchValue(e.target.value)}/>
+      <button onClick={onSearchLocation}>search</button>
+      </SearchBarWrapper>
       <Jimventory
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
       />
-      <NaverMap defaultZoom={18} center={currentLocation}>
-        {currentLocation && (
+      <NaverMap defaultZoom={16} center={currentLocation}>
+        {/* {selectedItem && <Polyline
+         path={[start, end]} 
+         strokeColor="#5347AA" 
+         strokeOpacity={0.5} 
+         strokeWeight={3.5} 
+        />} */}
+        {currentLocation && ( // 내 위치 보기 눌렀을 때 내 위치를 마커 표시
           <Marker
             position={currentLocation}
             icon={{
@@ -80,7 +161,9 @@ function Main() {
                 lat: storage.latitude,
                 lng: storage.longitude,
               }}
-              onClick={() => setSelectedItem(storage)}
+              onClick={() => {setSelectedItem(storage);
+                // calculateDistance(storage.longitude, storage.latitude);
+              }}
               icon={{
                 url: MarkerIcon, // 아이콘 이미지 URL
                 anchor: { x: 12, y: 36 }, // 앵커포인트 위치 (중심점 기준)
@@ -96,3 +179,6 @@ function Main() {
 }
 
 export default Main;
+// 길 찾기 => 도보만 몇분, 거리 몇km , 경로 표시
+// 경로가 지도에 뜨게 
+// 도보 몇분 거리 몇 km 이거는 Jimventory(가게 정보 컴포넌트)에 뜨게  
