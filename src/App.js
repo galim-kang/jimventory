@@ -13,6 +13,7 @@ import StartPage from "./pages/StartPage";
 import Layout from "./Layout";
 
 import { AuthContext } from "./context";
+import MyPage from "./pages/MyPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,6 +59,14 @@ function App() {
                 <BookingPage />
               </Layout>
             }
+          />
+          <Route
+          path="/myPage"
+          element={
+            <Layout>
+              <MyPage/>
+            </Layout>
+          }
           />
         </Routes>
       </Router>
