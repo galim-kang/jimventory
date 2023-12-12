@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../context";
+import Jimventory from "./Jimventory";
 
 const MenuBar = styled.div`
   position: fixed;
@@ -22,24 +23,20 @@ const MenuItem = styled.div`
 const Menu = ({ setMenuOpen }) => {
   const { isLoggedIn, logout } = useContext(AuthContext);
 
-  const onMenuItemClick = (path) => {
-    setMenuOpen(false);
-    // 페이지 이동 로직 작성
-  };
-
+  const navigate = useNavigate();
   return (
     <MenuBar>
-      <MenuItem onClick={() => onMenuItemClick("/content1")}>
-        <Link to="/content1">Content1</Link>
+      <MenuItem onClick={() => navigate('/landing')}>
+        landing
       </MenuItem>
-      <MenuItem onClick={() => onMenuItemClick("/content2")}>
-        <Link to="/content2">Content2</Link>
+      <MenuItem onClick={() => navigate('/main')}>
+        map
       </MenuItem>
-      <MenuItem onClick={() => onMenuItemClick("/content3")}>
-        <Link to="/content3">Content3</Link>
+      <MenuItem onClick={() => navigate('/my-jimventory')}>
+      jimventory
       </MenuItem>
-      <MenuItem onClick={() => onMenuItemClick("/content4")}>
-        <Link to="/content4">Content4</Link>
+      <MenuItem onClick={() => navigate('/myPage')}>
+        mypage
       </MenuItem>
     </MenuBar>
   );

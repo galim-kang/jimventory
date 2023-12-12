@@ -8,14 +8,11 @@ import { useState } from "react";
 import { styled } from "styled-components";
 // import { Polyline } from "react-naver-maps";
 import Jimventory from "../components/Jimventory";
-
 import serviceData from "../Data/ServiceData";
-
 import MyLocationIcon from "../image/MyLocation.png";
 import MarkerIcon from "../image/MarkerIcon.png";
 import UserIcon from "../image/UserIcon.png";
 import axios from "axios";
-
 const CurrentLocationButton = styled.button`
   position: absolute;
   padding: 18px;
@@ -116,19 +113,14 @@ function Main() {
   // function calculateDistance(longitude, latitude) {
   //   // const [x1, y1] = start;
   //   // const [x2, y2] = end;
-
   //     const distance = Math.sqrt(Math.pow(longitude - currentLocation?.lng, 2) + Math.pow(latitude - currentLocation?.lat, 2));
   //     console.log(distance, 'distance')
   //     return distance;
-
   // }
-
   // const start = [currentLocation?.lng, currentLocation?.lat];
   // const end = [selectedItem?.longitude, selectedItem?.latitude];
-
   // const distance = calculateDistance(start, end);
   // console.log('두 점 사이의 거리:', distance);
-
   return (
     <MapDiv
       style={{
@@ -149,10 +141,10 @@ function Main() {
       />
       <NaverMap defaultZoom={16} center={currentLocation}>
         {/* {selectedItem && <Polyline
-         path={[start, end]} 
-         strokeColor="#5347AA" 
-         strokeOpacity={0.5} 
-         strokeWeight={3.5} 
+         path={[start, end]}
+         strokeColor="#5347AA"
+         strokeOpacity={0.5}
+         strokeWeight={3.5}
         />} */}
         {currentLocation && ( // 내 위치 보기 눌렀을 때 내 위치를 마커 표시
           <Marker
@@ -188,7 +180,6 @@ function Main() {
     </MapDiv>
   );
 }
-
 export default Main;
 // 길 찾기 => 도보만 몇분, 거리 몇km , 경로 표시
 // 경로가 지도에 뜨게
